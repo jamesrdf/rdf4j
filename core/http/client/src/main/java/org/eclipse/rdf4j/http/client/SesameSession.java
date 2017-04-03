@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -704,7 +705,11 @@ public class SesameSession extends SparqlSession {
 			builder.setEntity(new UrlEncodedFormEntity(getQueryMethodParameters(ql, query, baseURI, dataset,
 					includeInferred, maxQueryTime, bindings), UTF8));
 		}
-
+		// functionality to provide custom http headers as required by the
+		// applications
+		for (Map.Entry<String, String> additionalHeader : getAdditionalHttpHeaders().entrySet()) {
+			builder.addHeader(additionalHeader.getKey(), additionalHeader.getValue());
+		}
 		return builder.build();
 	}
 
@@ -733,7 +738,11 @@ public class SesameSession extends SparqlSession {
 			builder.setEntity(new UrlEncodedFormEntity(getUpdateMethodParameters(ql, update, baseURI, dataset,
 					includeInferred, maxExecutionTime, bindings), UTF8));
 		}
-
+		// functionality to provide custom http headers as required by the
+		// applications
+		for (Map.Entry<String, String> additionalHeader : getAdditionalHttpHeaders().entrySet()) {
+			builder.addHeader(additionalHeader.getKey(), additionalHeader.getValue());
+		}
 		return builder.build();
 	}
 
